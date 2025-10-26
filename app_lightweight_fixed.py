@@ -157,8 +157,13 @@ class TeamCalendarAdmin:
                 return False
             
             # Import Google API libraries only when needed
-            from google.oauth2 import service_account
-            from googleapiclient.discovery import build
+            try:
+                from google.oauth2 import service_account
+                from googleapiclient.discovery import build
+            except ImportError as import_error:
+                st.error(f"❌ Missing Google API dependencies: {str(import_error)}")
+                st.info("Please ensure all Google API packages are installed. Check your requirements.txt file.")
+                return False
             
             # Validate service account structure
             required_fields = ['type', 'project_id', 'private_key_id', 'private_key', 'client_email']
